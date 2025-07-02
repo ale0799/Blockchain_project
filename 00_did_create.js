@@ -13,9 +13,9 @@ const web3 = new Web3('http://127.0.0.1:7545');
       return;
     }
     // Private key of the selected account. We used 3 users for our experiments
-    const privateKeyUser0 = '0x8d0653f96653885ea8c392735f65b22c00ecbe2b9de2bf54e75b28048fa082d7';
-    const privateKeyUser1 = '0xd01db3d78e6a594c6c371760d3816eac16262afe3f23f76ee6729cfa7dae6ca5';
-    const privateKeyUser2 = '0x920557ea8096160f295b8335006da5e59723004fdb9229c1e19334875496e77b';
+    const privateKeyUser0 = '0x8166db38999b04c3c51f7d2c7826f05c592c0b9537a35a4db1d1f53bc9b81708';
+    const privateKeyUser1 = '0x0b039446a2241a02d745abd0de558356aa8a2711631390ccfcf531b01dcde190';
+    const privateKeyUser2 = '0x0ff15ece665e3a4ca394ec3c43e97a26eff8e7840de310a79cd1f1767fe8e856';
     // Ensure the private key matches the chosen account. Retrieve the chain ID from the network. Ganache typically uses 1337 or 5777
     const chainId = await web3.eth.getChainId();
     // Create an Ethereum-based DID instance using the current web3 provider
@@ -29,9 +29,9 @@ const web3 = new Web3('http://127.0.0.1:7545');
 
 
     // Private key of the selected account. We used 3 users for our experiments
-    const privateKeyHotel0 = '0x3ecfd369de245233d6396c733c38697bff6d47e398ced9c7f72e02c126ea9af9';
-    const privateKeyHotel1 = '0xbf7beb2dfc8c7227f8547d179dc042703f511488a169ed08d5c674cbd82cdebb';
-    const privateKeyHotel2 = '0x5a2176e3f4b535d25f30aa5d6d7c0e800a2c53da11916ebc79138dc91b991de5';
+    const privateKeyHotel0 = '0x139a2d1597daee5e60cd2098e38f179224a364e7c36038025011a54644fd49ac';
+    const privateKeyHotel1 = '0xfa74c2c8f64e2204ce9e090fe232bfdf8a6f826582f0cdcb57cc7510e407a74b';
+    const privateKeyHotel2 = '0x333cd7a33a9f0154095c5a1366625160564cd472acd21284ae68d4e44352de21';
   
     
 
