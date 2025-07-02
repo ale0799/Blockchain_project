@@ -1,0 +1,29 @@
+{
+  "name": "blockchain_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "00_did_create.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ale0799/Blockchain_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ale0799/Blockchain_project/issues"
+  },
+  "homepage": "https://github.com/ale0799/Blockchain_project#readme",
+  "dependencies": {
+    "did-jwt": "^8.0.17",
+    "did-jwt-vc": "^4.0.15",
+    "did-resolver": "^4.1.0",
+    "ethr-did": "^3.0.38",
+    "ethr-did-resolver": "^11.0.4",
+    "solc": "^0.8.0",
+    "web3": "^4.16.0"
+  }
+}
