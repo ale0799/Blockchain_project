@@ -14,6 +14,8 @@ const ethrDidResolver = require('ethr-did-resolver');
     const address = accounts[0];
     const chainId = await web3.eth.getChainId();
 
+    const ethrDid = "";
+
     // Create the payload for the Verifiable Credential
     const vcPayload = {
       sub: "",
@@ -33,3 +35,13 @@ const ethrDidResolver = require('ethr-did-resolver');
         }
       }
     };
+    
+    const vcJwt = await createVerifiableCredentialJwt(vcPayload, ethrDid);
+    console.log("Verifiable Credential JWT:", vcJwt);
+
+    module.exports = { vcJwt };
+
+  } catch (error){
+    console.error("Error:", error);
+  }
+})();
