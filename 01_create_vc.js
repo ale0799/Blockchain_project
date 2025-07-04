@@ -1,6 +1,6 @@
 const { Web3 } = require('web3');
 const { EthrDID } = require('ethr-did');
-const { createVerifiableCredentialJwt, berifyCredential} = require('did-jwt-vc');
+const { createVerifiableCredentialJwt, verifyCredential} = require('did-jwt-vc');
 const { Resolver } = require('did-resolver');
 const ethrDidResolver = require('ethr-did-resolver');
 
@@ -44,9 +44,13 @@ const ethrDidResolver = require('ethr-did-resolver');
     console.log("User x DID is:", ethrDid_user.did);
 
     //Crete constant for date
-    const CheckIn_date = new Date("2025-07-10");
-    const CheckOut_date = new Date("2025-07-11");
-    const num_notti = Math.ceil((CheckOut_date - CheckIn_date) / (1000*60*60*25))
+    const CheckIn_date = new Date("2025-07-10T15:10:00Z");
+    const CheckOut_date = new Date("2025-07-15T10:45:00Z");
+    const start = new Date(CheckIn_date.toDateString());
+    const end = new Date(CheckOut_date.toDateString());
+    const num_notti = Math.ceil((end - start) / (1000*60*60*24))
+
+    const release_date = CheckOut_date;
 
     // Create the payload for the Verifiable Credential
     const vcPayload = {
@@ -64,7 +68,8 @@ const ethrDidResolver = require('ethr-did-resolver');
           Stay: {
             CheckIn: CheckIn_date,
             CheckOut: CheckOut_date,
-            N_notti: num_notti
+            N_notti: num_notti,
+            Release: release_date
           }
         }
       }
@@ -75,8 +80,11 @@ const ethrDidResolver = require('ethr-did-resolver');
 
     console.log("VC Payload:", JSON.stringify(vcPayload, null, 2));
 
+    //Saving the payload and jwt
+    const fs = require('fs');
 
-    module.exports = { vcJwt };
+    fs.writeFileSync('vc_jwt.txt', vcJwt, 'utf-8');
+    fs.writeFileSync('vcPayload.txt', JSON.stringify(vcPayload, null, 2), 'utf-8');
 
   } catch (error){
     console.error("Error:", error);
