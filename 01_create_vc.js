@@ -84,7 +84,6 @@ const ethrDidResolver = require('ethr-did-resolver');
     const fs = require('fs');
 
     fs.writeFileSync('vc_jwt.txt', vcJwt, 'utf-8');
-    fs.writeFileSync('vcPayload.txt', JSON.stringify(vcPayload, null, 2), 'utf-8');
 
   } catch (error){
     console.error("Error:", error);
