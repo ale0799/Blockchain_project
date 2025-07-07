@@ -1,0 +1,25 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "compile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.3.0",
+    "did-jwt": "^8.0.17",
+    "did-jwt-vc": "^4.0.15",
+    "did-resolver": "^4.1.0",
+    "dotenv": "^17.0.1",
+    "ethr-did": "^3.0.38",
+    "ethr-did-resolver": "^11.0.4",
+    "fs-extra": "^11.3.0",
+    "solc": "^0.8.0",
+    "web3": "^4.16.0",
+    "web3-utils": "^4.3.3"
+  }
+}
