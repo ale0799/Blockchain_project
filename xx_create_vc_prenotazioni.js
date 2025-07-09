@@ -28,8 +28,10 @@ function generaID() {
     return id;
 }
 
-async function createVCBooking(issuer, subject, checkInDate, checkOutDate, add_hotel) {
+async function createVCBooking(issuer, subject, checkInDate, checkOutDate, add_hotel, Num_person) {
     const id = generaID();
+
+    num_notti ="";
     // Create the payload for the Verifiable Credential
     const vcPayload = {
       sub: subject,
@@ -44,6 +46,8 @@ async function createVCBooking(issuer, subject, checkInDate, checkOutDate, add_h
         credentialSubject: {
           id: subject,
           Book: {
+            Num_person: Num_person,
+            Num_notti: num_notti,
             CheckIn: checkInDate,
             CheckOut: checkOutDate,
             Add_hotel: add_hotel

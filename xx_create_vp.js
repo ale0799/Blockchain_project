@@ -126,6 +126,10 @@ async function main() {
     const bookingAccount = accounts[9];
     const privateKeyBooking = "0x637b8191a4b48aa684cf97f80b43bfb3f0784a8ee156409583fd529edac40383";
 
+    //Booking data
+    const testUser = accounts[4];
+    const privateTestUser = "0xfa74c2c8f64e2204ce9e090fe232bfdf8a6f826582f0cdcb57cc7510e407a74b";
+
     //Create User DID
     const userDID = await createDID(userAccount, privateKeyUser, provider, chainId);
 
@@ -135,10 +139,13 @@ async function main() {
     //Create booking DID
     const bookingDID = await createDID(bookingAccount, privateKeyBooking, provider, chainId);
 
+    //Create test user
+    const testUserDID = await createDID(testUser, privateTestUser, provider, chainId);
+
     console.log("User DID is:", userDID.did);
     console.log("Hotel DID is:", hotelDID.did);
     console.log("Booking DID is:", bookingDID.did);
-
+    console.log("Booking DID is:", testUserDID.did);
     //Readaing the VCs
     const vcJwt_h = fs.readFileSync("vc_Jwt.txt", 'utf-8');
     const vcJwt_b = fs.readFileSync("vc_jwt_booking.txt",'utf-8');
@@ -148,7 +155,7 @@ async function main() {
 
     const address_r = "0x66fe5bE386de94499A00F6C44b60a932D84E4BDe";
 
-    await checkVP(userDID, hotelDID, bookingDID, vpJwt, address_r, chainId, providerUrl);
+    await checkVP(testUserDID, hotelDID, bookingDID, vpJwt, address_r, chainId, providerUrl);
 
   } catch(err) {
     console.log("Error:", err);

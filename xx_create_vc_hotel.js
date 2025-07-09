@@ -28,7 +28,7 @@ function generaID() {
     return id;
 }
 
-async function createVCHotel(issuer, subject, checkInDate) {
+async function createVCHotel(issuer, subject, checkInDate, Num_person) {
     const CheckOut_date = new Date("2025-07-15T10:45:00Z");
     const release_date = CheckOut_date;
     const start = new Date(checkInDate.toDateString());
@@ -50,6 +50,7 @@ async function createVCHotel(issuer, subject, checkInDate) {
         credentialSubject: {
           id: subject,
           Stay: {
+            Num_person: Num_person,
             CheckIn: checkInDate,
             CheckOut: CheckOut_date,
             N_notti: num_notti,
