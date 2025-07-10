@@ -47,11 +47,6 @@ async function downloadFromIPFS(cid, outputPath) {
   });
 }
 
-
-async function generateSalt(lenght = 32){
-    return crypto.randomBytes(lenght).toString('hex');
-}
-
 // ----- Main -----
 async function interact() {
     //Saving the review

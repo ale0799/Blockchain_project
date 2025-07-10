@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const { exit } = require('process');
-
+const crypto = require('crypto');
 
 async function createDID(address, privateKey, provider, chainID) {
     const ethrDid = new EthrDID({
@@ -23,6 +23,10 @@ async function createDID(address, privateKey, provider, chainID) {
     });
 
     return ethrDid;
+}
+
+async function generateSalt(lenght = 32){
+    return crypto.randomBytes(lenght).toString('hex');
 }
 
 async function createVP(vcJwt_h, vcJwt_b, subject) {
@@ -42,7 +46,7 @@ async function createVP(vcJwt_h, vcJwt_b, subject) {
 
 async function checkVP(subject, issuer_h, issuer_b, vpJwt, address_r, chainId, providerUrl) {
     // === CONFIGURATION OF THE RESOLVER ===
-    const registryAddress = address_r; // <-- replace with the DID contract address
+    const registryAddress = address_r;
     const resolverConfig = {
         networks: [{
             name: chainId,
@@ -136,15 +140,36 @@ async function checkVP(subject, issuer_h, issuer_b, vpJwt, address_r, chainId, p
             //exit;
         }
 
+        //Upload the file that contains the mapping between id and salt used
+        const fileIdPath = "idHash.json";
+        const idHashFile = fs.readFileSync(fileIdPath, 'utf-8');
+        const parseIdHash = JSON.parse(idHashFile);
+        const mapIdHash = new Map(Object.entries(parseIdHash));
+
+        const vcId = decoded_h.payload.vc.id;
+        console.log(vcId);
+        if(mapIdHash.get(vcId) != null){
+            console.log("Vc already used!");
+            return;
+        }
+
+        const salt = await generateSalt();
+        console.log(salt);
+
+        mapIdHash.set(vcId, salt);
+
+        fs.writeFileSync(fileIdPath, JSON.stringify(Object.fromEntries(mapIdHash), null, 2));
+
+        const combined = vcId + salt;
+        const hash = Web3.utils.keccak256(combined);
+        console.log(combined, hash);
+
         console.log(CheckIn_b, CheckIn_h, CheckOut_b, CheckOut_h);
         console.log("VP and VCs validated successfully!");
 
-        //DA IMPLEMENTARE:
-        //1) Controlli per capire che le 2 vc sono collegate, quindi sulle notti
-        //2) Creazione salt + salvataggio hash(id vc hotel + salt) da vedere dove o creare un Map in js e poi salvare
-        //oppure salvare su json
-
         console.log("The vcs are:", subjB);
+
+        return hash;
 
     } catch(err){
         console.log("Error:", err);
@@ -205,7 +230,7 @@ async function main() {
     const vpJwt = await createVP(vcJwt_h, vcJwt_b, userDID);
 
     console.log("prova")
-    const address_r = "0x66fe5bE386de94499A00F6C44b60a932D84E4BDe";
+    const address_r = "0x66fe5bE386de94499A00F6C44b60a932D84E4BDe"; // <-- replace with the DID contract address
 
     await checkVP(userDID, hotelDID, bookingDID, vpJwt, address_r, chainId, providerUrl);
 
