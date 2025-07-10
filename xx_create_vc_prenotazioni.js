@@ -48,8 +48,8 @@ async function createVCBooking(issuer, subject, checkInDate, checkOutDate, add_h
           Book: {
             Num_person: Num_person,
             Num_notti: num_notti,
-            CheckIn: checkInDate,
-            CheckOut: checkOutDate,
+            CheckIn: checkInDate.toDateString(),
+            CheckOut: checkOutDate.toDateString(),
             Add_hotel: add_hotel
           }
         }
@@ -88,12 +88,14 @@ async function main() {
     const hotel = accounts[1];
 
     console.log("User DID is:", userDID.did);
-    console.log("Hotel DID is:", bookingDID.did);
+    console.log("Booking DID is:", bookingDID.did);
+    console.log("Hotel DID is:", hotel);
 
     //VC creation
-    const checkInDate = new Date("2025-07-10T15:15:00Z");
-    const checkOutDate = new Date("2025-07-11T15:10:00Z");
-    const vcJwt = await createVCBooking(bookingDID, userDID.did, checkInDate, checkOutDate, hotel);
+    const checkInDate = new Date("2025-07-10");
+    const checkOutDate = new Date("2025-07-11");
+    const num_person = 3;
+    const vcJwt = await createVCBooking(bookingDID, userDID.did, checkInDate, checkOutDate, hotel, num_person);
 
     //Saving the vcJwt
     fs.writeFileSync('vc_jwt_booking.txt', vcJwt, 'utf-8');

@@ -58,7 +58,7 @@ async function checkVP(subject, issuer_h, issuer_b, vpJwt, address_r, chainId, p
 
         //Check on the subject
         if(result.issuer != subject.did){
-            console.log("The subject and the issuer of the vp are not equal!");
+            console.log("The subject (user) and the issuer of the vp are not equal!");
             exit;
         }
 
@@ -84,9 +84,60 @@ async function checkVP(subject, issuer_h, issuer_b, vpJwt, address_r, chainId, p
         const subjB = decoded_b.payload.vc.credentialSubject.id;
 
         if(result.issuer != subjH || result.issuer != subjB){
-            console.log("The subject is not correct!");
+            console.log("The subject of the VC does not match the VP issuer!");
             exit;
         }
+
+    
+
+        //Check release_date of Hotel VC (+12 hours)
+        const releaseDateStr = decoded_h.payload.vc.credentialSubject.Stay.Release;
+        if (releaseDateStr) {
+        const release_dateH = new Date(releaseDateStr);
+        const twelveHoursLater = new Date(release_dateH.getTime() + 12 * 60 * 60 * 1000);
+        ///// ELIMINARE IL CONTENUTO IN NOW now attuale dichiarato su si puo eliminare sta sezione 
+        const now = new Date("2025-07-15T23:45:00.000Z");
+        console.log(release_dateH.toISOString(), now.toISOString());
+        console.log(release_dateH.toDateString(), now.toDateString());
+
+        if (now < twelveHoursLater) {
+            console.log("12 hours have not passed since hotel VC issuance!");
+            //exit;
+        } else console.log("12 hours have passed since hotel VC issuance!");
+
+        } else {
+        console.log("Release date not found in Hotel VC:", decoded_h.vc.credentialSubject.Stay);
+        }
+
+        // Check coherence between VC data Da modificare
+        const hotelId_h = decoded_h.payload.vc.credentialSubject.Stay.Add_hotel;
+        const hotelId_b = decoded_b.payload.vc.credentialSubject.Book.Add_hotel;
+        console.log(hotelId_b, hotelId_h);
+
+        if (hotelId_b !== hotelId_h) {
+            console.log("Hotel ID mismatch between booking and hotel VCs!");
+            //exit;
+        }
+
+        const CheckIn_h = decoded_h.payload.vc.credentialSubject.Stay.CheckIn;
+        const CheckOut_h = decoded_h.payload.vc.credentialSubject.Stay.CheckOut;
+        const CheckIn_b = decoded_b.payload.vc.credentialSubject.Book.CheckIn;
+        const CheckOut_b = decoded_b.payload.vc.credentialSubject.Book.CheckOut;
+
+        if (CheckIn_b !== CheckIn_h || CheckOut_b !== CheckOut_h) {
+            console.log("Check-in/check-out dates do not match between VCs!" );
+            //exit;
+        } 
+        const num_people_h = decoded_h.payload.vc.credentialSubject.Stay.Num_person;
+        const num_people_b = decoded_b.payload.vc.credentialSubject.Book.Num_person;
+        console.log (num_people_b, num_people_h);
+        if (num_people_b !== num_people_h){
+            console.log("Number of people do not match between VCs!" );
+            //exit;
+        }
+
+        console.log(CheckIn_b, CheckIn_h, CheckOut_b, CheckOut_h);
+        console.log("VP and VCs validated successfully!");
 
         //DA IMPLEMENTARE:
         //1) Controlli per capire che le 2 vc sono collegate, quindi sulle notti
@@ -153,9 +204,10 @@ async function main() {
     //VP creation
     const vpJwt = await createVP(vcJwt_h, vcJwt_b, userDID);
 
+    console.log("prova")
     const address_r = "0x66fe5bE386de94499A00F6C44b60a932D84E4BDe";
 
-    await checkVP(testUserDID, hotelDID, bookingDID, vpJwt, address_r, chainId, providerUrl);
+    await checkVP(userDID, hotelDID, bookingDID, vpJwt, address_r, chainId, providerUrl);
 
   } catch(err) {
     console.log("Error:", err);

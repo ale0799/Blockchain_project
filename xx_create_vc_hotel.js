@@ -5,6 +5,7 @@ const { Resolver } = require('did-resolver');
 const ethrDidResolver = require('ethr-did-resolver');
 const fs = require('fs');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const counterPath = path.join(__dirname, 'counter.json');
 
@@ -28,8 +29,8 @@ function generaID() {
     return id;
 }
 
-async function createVCHotel(issuer, subject, checkInDate, Num_person) {
-    const CheckOut_date = new Date("2025-07-15T10:45:00Z");
+async function createVCHotel(issuer, subject, checkInDate, Num_person, add_hotel) {
+    const CheckOut_date = new Date("2025-07-11");
     const release_date = CheckOut_date;
     const start = new Date(checkInDate.toDateString());
     const end = new Date(CheckOut_date.toDateString());
@@ -51,10 +52,11 @@ async function createVCHotel(issuer, subject, checkInDate, Num_person) {
           id: subject,
           Stay: {
             Num_person: Num_person,
-            CheckIn: checkInDate,
-            CheckOut: CheckOut_date,
+            CheckIn: checkInDate.toDateString(),
+            CheckOut: CheckOut_date.toDateString(),
             N_notti: num_notti,
-            Release: release_date
+            Release: release_date,
+            Add_hotel: add_hotel
           }
         }
       }
@@ -90,11 +92,13 @@ async function main() {
 
     console.log("User DID is:", userDID.did);
     console.log("Hotel DID is:", hotelDID.did);
-
+    console.log(hotelAccount);
     //VC creation
-    const CheckIn_date = new Date("2025-07-10T15:10:00Z");
-    const vcJwt = await createVCHotel(hotelDID,userDID.did, CheckIn_date);
-
+    const CheckIn_date = new Date("2025-07-10");
+    const num_person = 3; 
+    const vcJwt = await createVCHotel(hotelDID,userDID.did, CheckIn_date, num_person, hotelAccount);
+     const decoded_h = jwt.decode(vcJwt, { complete: true});
+    console.log(decoded_h.payload.vc.credentialSubject);
     //Saving the vcJwt
     fs.writeFileSync('vc_jwt.txt', vcJwt, 'utf-8');
 
