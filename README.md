@@ -8,5 +8,7 @@ L’ordine di esecuzione dei file è così definito:
  - 	answer.js
  - 	viewRec.js
  - 	delete_rec.js
+
+   
 L'ordine dopo la insert_rec è puramente arbitrario; 
 Per inserire recensioni con utenti diversi, bisogna modificare l'indirizzo utilizzato scegliendo opportunamente quello dell'utente desiderato
