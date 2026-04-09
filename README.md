@@ -66,7 +66,7 @@ Il sistema garantisce:
 ## Autori
 - Alessia Lettieri (ale0799)
 - Marco Panico (mpanico20)
-- Pasquale Messina
+- Pasquale Messina (PaskMess)
 
 ## Esecuzione
 L’ordine di esecuzione dei file è così definito:
